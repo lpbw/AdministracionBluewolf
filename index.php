@@ -1,5 +1,6 @@
 <?
 	session_start();
+	include "coneccion.php";
 	$url =  "{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
 
 	if ($url == "www.bluewolf.com.mx/admon/AdministracionBlueWolf/")
@@ -8,12 +9,22 @@
 		{
 			$usuario = $_SESSION['usuario'];
 			$pass = $_SESSION['pass'];
+			echo"<script>window.location=\"menu_admin.php\"</script>";
 		}
 		else
 		{
 			$usuario = "";
 			$pass = "";
 		}
+	}
+
+	//Cuando vaz a hacer login con otra cuenta.
+	if ($_POST['otra']!="")
+	{
+		unset($_SESSION['usuario']);
+		unset($_SESSION['pass']);
+		$usuario = "";
+		$pass = "";
 	}
 ?>
 <!DOCTYPE html>
@@ -35,62 +46,29 @@
 			.cursor{
 				cursor:pointer;
 			}
+			.loader {
+				position: fixed;
+				left: 0px;
+				top: 0px;
+				width: 100%;
+				height: 100%;
+				z-index: 9999;
+				background: url('images/pageLoader.gif') 50% 50% no-repeat rgb(249,249,249);
+				opacity: .8;
+			}
 		</style>
 		<script>
-			//Cuando no ha iniciaso nunca.
-			function NuevoLogin()
-			{
-				var fd = new FormData(document.getElementById("login"));
-				fd.append('usuario',$("#usuario").val());
-				fd.append('password',$("#password").val());
-
-				$.ajax({
-					url:   'nuevo_login.php',
-					type:  'post',
-					dataType: "html",
-					data: fd,
-					cache: false,
-            		contentType: false,
-            		processData: false,
-					beforeSend: function ()
-					{
-							//$("#informacion2").html("Procesando, espere por favor...");
-					},
-					success:  function (response)
-					{
-						console.log(response);
-					}
-				});
-			}
-
-			//Cuando ahi session.
-			function ActualLogin()
-			{
-				var fd = new FormData(document.getElementById("actual"));
-				fd.append('usuario',$("#iconousuario").val());
-				fd.append('password',$("#iconopass").val());
-
-				$.ajax({
-					url:   'actual_login.php',
-					type:  'post',
-					dataType: "html",
-					data: fd,
-					cache: false,
-            		contentType: false,
-            		processData: false,
-					beforeSend: function ()
-					{
-							//$("#informacion2").html("Procesando, espere por favor...");
-					},
-					success:  function (response)
-					{
-						console.log(response);
-					}
-				});
-			}
+			$(window).ready(function() {
+    $(".loader").fadeOut("slow");
+});
 		</script>
 	</head>
 	<body>
+		
+		<div class="loader"></div>
+    </div>
+  </div>
+		</div>
 		<!-- contenedor -->
 		<div>
 			<!-- columnas -->
@@ -112,7 +90,7 @@
 										<form method="post" name="actual" id="actual">
 											<div class="row">
 												<div class="col s12 m4 l4 xl4 offset-s4 offset-m4 offset-l4 offset-xl4 cursor">
-													<div class="chip cursor" id="IconoLogin">
+													<div class="chip cursor col s4 m4 l12 xl12" id="IconoLogin">
 														<label class="cursor" onclick="ActualLogin();">
 															<i class="small material-icons cursor">account_circle</i>
 															<b><? echo $usuario; ?></b>
@@ -121,6 +99,11 @@
 														</label>	
 													</div>
 												</div>
+											</div>
+											<div class="row">
+												<div class="col s4 m4 l4 xl4 offset-s4 offset-m4 offset-l4 offset-xl4">
+													<input type="submit" value="Otra Cuenta" class="btn indigo darken-3 btn" name="otra" id="otra">
+												</div>	
 											</div>
 										</form>
 										<?
@@ -165,5 +148,6 @@
 		<script type="text/javascript" src="js/materialize.min.js"></script>
 		<script type="text/javascript" src="js/materialize.js"></script>
 		<script type="text/javascript" src="js/initialize.js"></script>
+		<script type="text/javascript" src="js/login.js"></script>
 	</body>
 </html>
