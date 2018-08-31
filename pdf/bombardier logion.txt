@@ -1,0 +1,22 @@
+tipo trabajador(almacenista,capturista,kiteo)
+
+t_turnos
+id turno hora_entrada hora_salida
+ 1   1     7:00          4:00 
+ 2   2     4:01          11:59
+
+
+t_captura 
+id 
+id_turno
+almacenista
+capturista
+kiteo
+fecha
+
+primerturno
+segundoturno
+
+
+checar si ya esta registrado
+checar el rango de turno y ver si ya ahi uno registrado en el dia actual
