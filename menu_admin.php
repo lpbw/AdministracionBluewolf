@@ -1,83 +1,82 @@
-<?
-session_start();
-include "checar_sesion.php";
-include "checar_sesion_admin.php";
-include "coneccion.php";
-$id_e=$_GET["id_e"];
-$tipo=$_SESSION['idA'];
-?>
-<!DOCTYPE HTML>
-<!--
-	Massively by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html>
+<!DOCTYPE html>
+<html lang="en">
 	<head>
-		<title>Administración</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<meta charset="UTF-8">
+		<!--Import Google Icon Font-->
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<!--Import materialize.css-->
+		<link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+		<link type="text/css" rel="stylesheet" href="css/materialize.css"  media="screen,projection"/>
+		<!--Let browser know website is optimized for mobile-->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<link rel="stylesheet" href="css/font-awesome.min.css">
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+		<title>Administración-BlueWolf</title>
+		<style>
+			.loader 
+			{
+				position: fixed;
+				left: 0px;
+				top: 0px;
+				width: 100%;
+				height: 100%;
+				z-index: 9999;
+				background: url('images/pageLoader.gif') 50% 50% no-repeat rgb(249,249,249);
+				opacity: .8;
+			}
+			.centrar
+			{
+				margin-left:15%;
+			}
+		</style>
+		<script>
+			$(window).ready(function()
+			{
+    			$(".loader").fadeOut("slow");
+			});
+		</script>
 	</head>
-	<body class="is-loading">
+	<body>
 
-		<!-- Wrapper -->
-			<div id="wrapper">
+		<div class="loader"></div>
+		
 
-				<!-- Header -->
-					<header id="header">
-						<a class="logo">Administración</a>					</header>
+		<ul id="slide-out" class="sidenav">
+			<li><img src="images/bw.png" class="centrar"></li>
+			<li><div class="divider"></div></li>
+			<li><a href="#!">Clientes</a></li>
+			<li><div class="divider"></div></li>
+			<li><a class="subheader">Subheader</a></li>
+			<li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+  		</ul>
 
-				
-
-				<!-- Main -->
-				<div id="main">
-					<ul class="actions fit">
-						<li><a href="adm_clientes.php" class="button special fit">Clientes</a></li>
-						<li><a href="adm_proyectos.php" class="button special fit">Proyectos</a></li>
-						<li><a href="buscar_cobros.php" class="button special fit">Facturación</a></li>
-					</ul>
-					<ul class="actions fit">
-				
-						<li><a href="facturas_cobrar.php" class="button special fit">Facturas por Cobrar</a></li>
-						<li><a href="gastos.php" class="button special fit">Gastos</a></li>
-						<?if($tipo==1){?>
-						<li><a href="reportes.php" class="button special fit">Reportes</a></li>
-						<?}?>
-						<li><a href="vista_viajes.php" class="button special fit">Viajes</a></li>
-					</ul>
-					<ul class="actions fit">
-				
-						<?if($tipo==1){?>
-						<li><a href="anticipos.php" class="button special fit">Viáticos</a></li>
-						<?}?>
-					</ul>
-					<ul class="actions">
-						<li><a href="logout.php" class="button icon fa-sign-out">Salir</a></li>
-					</ul>
-					<footer>
-							<ul class="icons alt">
-								<li><a href="#" class="icon alt fa-twitter"><span class="label">Twitter</span></a></li>
-								<li><a href="#" class="icon alt fa-facebook"><span class="label">Facebook</span></a></li>
-								<li><a href="#" class="icon alt fa-instagram"><span class="label">Instagram</span></a></li>
-								<li><a href="#" class="icon alt fa-github"><span class="label">GitHub</span></a></li>
-							</ul>			
-					</footer>
+		<!-- contenedor -->
+		<div>
+			<div class="row">
+				<div class="col s12 m12 l12 xl12">
+					<!-- boton nav bar -->
+					<a href="#" data-target="slide-out" class="sidenav-trigger">
+						<i class="material-icons medium indigo-text">
+							menu
+						</i>
+					</a>
+					<!-- fin boton nav bar -->
 				</div>
-				<!-- Copyright -->
-					<div id="copyright">
-						<ul><li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">Bluewolf</a></li></ul>
-					</div>
+			</div>
+			
+			<div class="row">
+				<div class="col s12 m12 l12 xl12">
+					
+				</div>
 			</div>
 
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrollex.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/skel.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main2.js"></script>
+		</div>
+		<!-- fin contenedor -->
 
+		<!--JavaScript at end of body for optimized loading-->
+		<script type="text/javascript" src="js/materialize.min.js"></script>
+		<script type="text/javascript" src="js/materialize.js"></script>
+		<script type="text/javascript" src="js/initialize.js"></script>
 	</body>
 </html>

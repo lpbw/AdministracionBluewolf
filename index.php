@@ -58,17 +58,16 @@
 			}
 		</style>
 		<script>
-			$(window).ready(function() {
-    $(".loader").fadeOut("slow");
-});
+			$(window).ready(function()
+			{
+    			$(".loader").fadeOut("slow");
+			});
 		</script>
 	</head>
 	<body class="indigo darken-3">
 		
 		<div class="loader"></div>
-    </div>
-  </div>
-		</div>
+    
 		<!-- contenedor -->
 		<div class="">
 			<!-- columnas -->
@@ -79,7 +78,7 @@
 						<div class="col s12 m12 l4 xl4 offset-l4 offset-xl4">
 							<div class="card white-grey darken1">
 								<div class="card-content black-text">
-									<div class="col s12 m12 l12 xl12 offset-s2 offset-m2 offset-l2 offset-xl2">
+									<div class="col s12 m12 l12 xl12 offset-s2 offset-m2 offset-l3 offset-xl3">
 										<img src="images/bw.png" alt="">
 									</div>
 									
