@@ -63,14 +63,14 @@
 });
 		</script>
 	</head>
-	<body>
+	<body class="indigo darken-3">
 		
 		<div class="loader"></div>
     </div>
   </div>
 		</div>
 		<!-- contenedor -->
-		<div>
+		<div class="">
 			<!-- columnas -->
 			<div class="col s12 m12 l12 xl12">
 				<br><br><br>
@@ -79,6 +79,10 @@
 						<div class="col s12 m12 l4 xl4 offset-l4 offset-xl4">
 							<div class="card white-grey darken1">
 								<div class="card-content black-text">
+									<div class="col s12 m12 l12 xl12 offset-s2 offset-m2 offset-l2 offset-xl2">
+										<img src="images/bw.png" alt="">
+									</div>
+									
 									<span class="card-title center flow-text">
 										INICIAR SESIÓN
 									</span>
