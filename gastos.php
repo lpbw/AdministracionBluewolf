@@ -994,7 +994,7 @@ campo2="<div class='4u 12u(xsmall)' id='iv"+valor+"'><label for='iva"+valor+"'>I
 						  
 						   <div class="row uniform">
 						   		<div class="4u 12u(xsmall)"><!--boton buscar.-->
-									<input class="button special fit" type="submit" name="busca" id="busca" value="Buscar" onClick="buscar()"/>
+									<input class="button special fit" type="button" name="busca" id="busca" value="Buscar" onClick="buscar()"/>
 								</div>
 							</div>	
 						</div>

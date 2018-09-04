@@ -312,7 +312,7 @@ $tabla=$tabla.$tr2;/*"<tr><td>".$com."<input  name=\"idc[]\" id=\"idc\" type=\"h
 	$tabla=$tabla."<tr><td>".$com."<input  name=\"idc[]\" id=\"idc\" type=\"hidden\" value=\"$id\"></td><td>$area</td><td>$tgasto</td><td>$mp</td><td>$proyecto</td><td>".$com2."</td><td>$proveedor</td><td>$concepto</td><td>".money_format('$%n',$subtotal)."</td><td>".money_format('$%n',$iva)."</td><td>".money_format('$%n',$isr)."</td><td>".money_format('$%n',$total)."</td></tr>";
 	}*/
 }
-$tabla=$tabla."<tr><td colspan=\"8\"></td><td></td><td>".money_format('$%n',$sumsub)."</td><td>".money_format('$%n',$sumiva)."</td><td>".money_format('$%n',$sumisr)."</td><td>".money_format('$%n',$sumtotal)."</td></tr></tbody></table>".$com3."</form></html>";
+$tabla=$tabla."<tr><td colspan=\"9\"></td><td></td><td>".money_format('$%n',$sumsub)."</td><td>".money_format('$%n',$sumiva)."</td><td>".money_format('$%n',$sumisr)."</td><td>".money_format('$%n',$sumtotal)."</td></tr></tbody></table>".$com3."</form></html>";
 echo $tabla;
 	break;
 /*==============================================================================================================*/
