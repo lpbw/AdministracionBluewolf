@@ -1,36 +1,43 @@
 <?
-session_start();
-include "checar_sesion.php";
-include "checar_sesion_admin.php";
-include "coneccion.php";
+	session_start();
+	include "checar_sesion.php";
+	include "checar_sesion_admin.php";
+	include "coneccion.php";
 
-$d=$_POST['de'];//fecha desde
-$h=$_POST['ha'];//fecha hasta
+	$d=$_POST['de'];//fecha desde
+	$h=$_POST['ha'];//fecha hasta
+	$b=" f.fecha_emision=''";
+	$hoy=date("Y-m-d");
+			
+	if($_POST["guardar"]=="Guardar")
+	{
+		$fpago=$_POST['fpago'];
+		$estatus=$_POST['estatus'];
+		$idfa=$_POST['idf'];
+		$Complemento=$_POST['complemento'];
+		$c=0;
+		foreach($estatus as $e)
+		{
+			// Fecha de pago
+			$f=$fpago[$c];
+			// ID factura
+			$idfac=$idfa[$c];
 
-$b=" f.fecha_emision=''";
-$hoy=date("Y-m-d");
-		
-if($_POST["guardar"]=="Guardar") {
-	$fpago=$_POST['fpago'];
-	//$fpago=date("Y-m-d",strtotime($fpago));
-	$estatus=$_POST['estatus'];
-	$idfa=$_POST['idf'];
-	$c=0;
-	foreach($estatus as $e){
-	$f=$fpago[$c];
-	/*echo "<script>alert('Fecha de pago: $f');</script>";*/
-	$idfac=$idfa[$c];
-	//if no tiene fecha de pago no se guarda
-	if($f!="dd/mm/yyyy"){
-	$f=date("Y-m-d",strtotime($f));
-	/*echo "<script>alert('Fecha de pago: $f');</script>";*/
-		/*echo "<script>alert('Estatus: $e, Fecha de pago: $f, ID: $idfac');</script>";*/
-		$queryactualizar="update facturacion set estatus_pago='$e',fecha_pago='$f' where id='$idfac'";
-		$resactualizar = mysql_query($queryactualizar) or die("La actualizacion en doc:facturas_cobrar:linea:39 fallo: $queryactualizar" . mysql_error());
-	}
-	$c++;
-	}
-}	
+			$NoComplemento=$Complemento[$c];
+			//if no tiene fecha de pago no se guarda
+			if($f!="dd/mm/yyyy")
+			{
+				$f=date("Y-m-d",strtotime($f));
+				//Se actualiza la factura
+				$queryactualizar="update facturacion set estatus_pago='$e',fecha_pago='$f' where id='$idfac'";
+				$resactualizar = mysql_query($queryactualizar) or die("La actualizacion en doc:facturas_cobrar:linea:39 fallo: $queryactualizar" . mysql_error());
+				// Inserta un complemento de pago 
+				$InsertComplemento="INSERT INTO complemento(no_factura,no_complemento,monto)VALUES('$idfac','$NoComplemento',0)";
+				$resinsert = mysql_query($InsertComplemento) or die("query en doc:facturas_cobrar:linea:39 fallo: $InsertComplemento" . mysql_error());
+			}
+			$c++;
+		}
+	}	
 ?>
 <!DOCTYPE HTML>
 <!--
@@ -50,13 +57,31 @@ if($_POST["guardar"]=="Guardar") {
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
 <script>
+
 $(function () {
 $("#desde").datepicker({ dateFormat: 'yy-mm-dd' });
 $("#hasta").datepicker({ dateFormat: 'yy-mm-dd' });
 $(".datepicker").datepicker({ dateFormat: 'dd-mm-yy' });
 });
 
-
+	// Poner el cfdi si el estatus es pagado
+	function CFDI(id)
+	{
+		// Obtener el valor seleccionado de estatus
+		var Estatus = $("#estatus"+id+" option:selected").val();
+		console.log(id);
+		//Verificar que se haya seleccionado el estatus pagado
+		if (Estatus == 2)
+		{
+			$("#complemento"+id).prop("type","text");
+		}
+		else
+		{
+			$("#complemento"+id).prop("type","hidden");
+			$("#complemento"+id).val(0);
+		}
+		
+	}
 </script>
 	</head>
 
@@ -95,14 +120,15 @@ $(".datepicker").datepicker({ dateFormat: 'dd-mm-yy' });
 
 					<thead>
 						<tr>
-							<th width="20%">Fecha Emision</th>
+							<th width="10%">Fecha Emision</th>
 							<th width="5%">No.Factura</th>
-							<th width="10%">Cliente</th>
-							<th width="12%">Concepto</th>
+							<th width="15%">Cliente</th>
+							<th width="15%">Concepto</th>
 							<th width="5%">Monto</th>
-							<th width="20%">Fecha Pago</th>
-							<th width="17%">Estatus</th>
-							<th width="11%">Tipo</th>
+							<th width="10%">Fecha Pago</th>
+							<th width="15%">Estatus</th>
+							<th width="15%">No.Complemento</th>
+							<th width="10%">Tipo</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -139,8 +165,9 @@ $(".datepicker").datepicker({ dateFormat: 'dd-mm-yy' });
 								<input style="width:100%;" class="datepicker" name="fpago[]" id="fpago<? echo $c;?>" type="text" readonly="true" value="dd/mm/yyyy"/>
 								<input name="idf[]" id="idf" value="<? echo $res2['idf'];?>" type="hidden"/>
 							</td>
+							
 							<td>
-								<select name="estatus[]" id="estatus" style="width:100%; margin-left:-7px;">
+								<select name="estatus[]" id="estatus<? echo $res2['idf'];?>" style="width:100%; margin-left:-7px;" onchange="CFDI('<? echo $res2['idf'];?>');">
 					  				<?
 									$queryestatus="SELECT * FROM estatus_pago";
 									$resultado3 = mysql_query($queryestatus) or die("fallo queryestatus: $queryestatus" . mysql_error());
@@ -152,6 +179,13 @@ $(".datepicker").datepicker({ dateFormat: 'dd-mm-yy' });
 									?>
 					  			</select>		
 							</td>
+
+							<!-- Numero de complemento -->
+							<td>
+								<input name="complemento[]" id="complemento<? echo $res2['idf'];?>" value="0" type="hidden"/>
+							</td>
+
+
 							<td><? echo $seguro;?>
 							<input name="de" id="de" value="<? echo $desde;?>" type="hidden"/>
 							<input name="ha" id="ha" value="<? echo $hasta;?>" type="hidden"/>
