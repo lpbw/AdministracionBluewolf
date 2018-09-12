@@ -68,7 +68,7 @@
 
 			if($id_proyecto==0)
 			{//sin proyecto
-				$query="select f.estatus_pago,date_format(f.fecha_emision,'%Y-%m-%d') as emision,f.no_factura,c.nombre as cliente,f.concepto,a.nombre as area,f.monto,f.iva,f.total,ep.nombre as estatus,f.fecha_pago from facturacion f join clientes c on f.id_cliente=c.id join areas a on f.id_area=a.id join estatus_pago ep on f.estatus_pago=ep.id where f.id='$id_factura' order by f.no_factura";
+				$query="select f.estatus_pago,date_format(f.fecha_emision,'%Y-%m-%d') as emision,f.no_factura,c.nombre as cliente,f.concepto,a.nombre as area,f.monto,f.iva,f.total,ep.nombre as estatus,date_format(f.fecha_pago,'%Y-%m-%d') AS pago from facturacion f join clientes c on f.id_cliente=c.id join areas a on f.id_area=a.id join estatus_pago ep on f.estatus_pago=ep.id where f.id='$id_factura' order by f.no_factura";
 				$resultado = mysql_query($query) or die("Error en consulta horario: $query " . mysql_error());
 				$res=mysql_fetch_assoc($resultado);
 				
@@ -117,14 +117,14 @@
 					<td><? echo money_format("$%n",$total1);?></td>
 					<td><? echo money_format("$%n",$t);?></td>
 					<td><? echo $res['estatus'];?></td>
-					<td><? echo $res['fecha_pago'];?></td>
+					<td><? echo $res['pago'];?></td>
 				</tr>
 	<?
 	}
 		}
 		else
 		{
-		$query="select f.estatus_pago,date_format(f.fecha_emision,'%Y-%m-%d') as emision,f.no_factura,c.nombre as cliente,f.concepto,a.nombre as area,f.monto,f.iva,f.total,ep.nombre as estatus,f.fecha_pago from facturacion f join clientes c on f.id_cliente=c.id join proyectos p on f.id_proyecto=p.id join areas a on p.id_area=a.id join estatus_pago ep on f.estatus_pago=ep.id where f.id='$id_factura' order by f.no_factura";
+		$query="select f.estatus_pago,date_format(f.fecha_emision,'%Y-%m-%d') as emision,f.no_factura,c.nombre as cliente,f.concepto,a.nombre as area,f.monto,f.iva,f.total,ep.nombre as estatus,date_format(f.fecha_pago,'%Y-%m-%d') AS pago from facturacion f join clientes c on f.id_cliente=c.id join proyectos p on f.id_proyecto=p.id join areas a on p.id_area=a.id join estatus_pago ep on f.estatus_pago=ep.id where f.id='$id_factura' order by f.no_factura";
 				$resultado = mysql_query($query) or die("Error en consulta horario: $query " . mysql_error());
 				$res=mysql_fetch_assoc($resultado);
 				
@@ -170,7 +170,7 @@
 					<td><? echo money_format("$%n",$total1);?></td>
 					<td><? echo money_format("$%n",$t);?></td>
 					<td><? echo $res['estatus'];?></td>
-					<td><? echo $res['fecha_pago'];?></td>
+					<td><? echo $res['pago'];?></td>
 				</tr>
 	<?	
 		}
