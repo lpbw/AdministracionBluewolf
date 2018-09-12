@@ -22,6 +22,7 @@ $total=0;
 switch($valor)
 {
 	case 1:
+		$TablaComplemento="";
 		$tabla="<table class=\"t\"><thead><tr><th colspan=\"12\">Fecha Reporte de Facturas BW del  $desde al  $hasta </th></tr><tr><th colspan=\"6\"></th><th colspan=\"3\">Facturada en el periodo</th><th  colspan=\"3\"></th></tr><tr><th >Fecha</th><th >No.Factura</th><th >Cliente</th><th >Concepto</th><th >&Aacute;rea de Venta</th><th >Saldo Anterior</th><th >Subtotal</th><th >IVA</th><th >Total</th><th >Saldo</th><th >Estatus</th><th >Fecha de pago</th></tr></thead><tbody>";
 
 		$queryp="select id,id_proyecto,no_factura from facturacion where fecha_emision>='$desde 00:00:00' and fecha_emision<='$hasta 00:00:00' order by no_factura";
@@ -31,6 +32,14 @@ switch($valor)
 		{
 		$id_factura=$reshp['id'];
 		$id_proyecto=$reshp['id_proyecto'];
+
+		// llenar los registros de complementos de pago
+		$QueryComplemento="SELECT com.id_complemento,fac.fecha_emision AS emision,com.no_complemento,c.nombre AS cliente,com.concepto,com.monto,fac.estatus_pago AS estatus,fac.fecha_pago AS pago FROM complemento com JOIN facturacion fac ON com.id_factura=fac.id JOIN clientes c ON fac.id_cliente=c.id WHERE fac.id=$id_factura";
+		$ResultadoComplemento = mysql_query($QueryComplemento) or die("Error en consulta complemento: $QueryComplemento " . mysql_error());
+		$ResCom = mysql_fetch_assoc($ResultadoComplemento);
+		$TablaComplemento.="<tr><td>".$ResCom['emision']."</td><td>".$ResCom['no_complemento']."</td><td>".$ResCom['cliente']."</td><td>".$ResCom['concepto']."</td><td>".$ResCom['area']."</td><td></td><td>".money_format("$%n",$ResCom['monto'])."</td><td>".money_format("$%n",$ResCom['monto'])."</td><td>".money_format("$%n",$ResCom['monto'])."</td><td>".money_format("$%n",$ResCom['monto'])."</td><td>PAGADO</td><td>".$ResCom['pago']."</td></tr>";
+		// fin de complementos de pago
+
 			/*echo"<script>alert('factura: $id_factura, proyecto: $id_proyecto');</script>";*/
 			if($id_proyecto==0){//sin proyecto
 				$query="select f.estatus_pago,date_format(f.fecha_emision,'%Y-%m-%d') as emision,f.no_factura,c.nombre as cliente,f.concepto,a.nombre as area,f.monto,f.iva,f.total,ep.nombre as estatus,f.fecha_pago from facturacion f join clientes c on f.id_cliente=c.id join areas a on f.id_area=a.id join estatus_pago ep on f.estatus_pago=ep.id where f.id='$id_factura' order by f.no_factura";
@@ -168,8 +177,10 @@ switch($valor)
 			$total1=money_format("$%n",$total1);
 			//$sumpagados=money_format("$%n",$sumpagos);
 
+			$tabla=$tabla.$TablaComplemento;
 			$tabla=$tabla."<tr><td colspan=\"5\"></td><td>".$saldoant."</td><td>".$sumsub."</td><td>".$sumiva."</td><td>".$sumtotal."</td><td>".$total1."</td><td></td><td></td></tr>";
 			$tabla=$tabla."</tbody></table>";
+			
 	echo $tabla;
 	break;
 

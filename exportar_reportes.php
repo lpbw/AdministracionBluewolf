@@ -40,7 +40,7 @@
 			<th bgcolor="#CCCCCC">No.Factura</th>
 			<th bgcolor="#CCCCCC">Cliente</th>
 			<th bgcolor="#CCCCCC">Concepto</th>
-			<th bgcolor="#CCCCCC">¡rea de Venta</th>
+			<th bgcolor="#CCCCCC">√Årea de Venta</th>
 			<th bgcolor="#CCCCCC">Saldo Anterior</th>
 			<th bgcolor="#CCCCCC">Subtotal</th>
 			<th bgcolor="#CCCCCC">IVA</th>
@@ -58,6 +58,14 @@
 		{
 			$id_factura=$reshp['id'];
 			$id_proyecto=$reshp['id_proyecto'];
+
+			// llenar los registros de complementos de pago
+			$QueryComplemento="SELECT com.id_complemento,date_format(fac.fecha_emision,'%Y-%m-%d') AS emision,com.no_complemento,c.nombre AS cliente,com.concepto,com.monto,fac.estatus_pago AS estatus,date_format(fac.fecha_pago,'%Y-%m-%d') AS pago FROM complemento com JOIN facturacion fac ON com.id_factura=fac.id JOIN clientes c ON fac.id_cliente=c.id WHERE fac.id=$id_factura";
+			$ResultadoComplemento = mysql_query($QueryComplemento) or die("Error en consulta complemento: $QueryComplemento " . mysql_error());
+			$ResCom = mysql_fetch_assoc($ResultadoComplemento);
+			$TablaComplemento.="<tr><td>".$ResCom['emision']."</td><td>".$ResCom['no_complemento']."</td><td>".$ResCom['cliente']."</td><td>".$ResCom['concepto']."</td><td>".$ResCom['area']."</td><td></td><td>".money_format("$%n",$ResCom['monto'])."</td><td>".money_format("$%n",$ResCom['monto'])."</td><td>".money_format("$%n",$ResCom['monto'])."</td><td>".money_format("$%n",$ResCom['monto'])."</td><td>PAGADO</td><td>".$ResCom['pago']."</td></tr>";
+			// fin de complementos de pago
+
 			if($id_proyecto==0)
 			{//sin proyecto
 				$query="select f.estatus_pago,date_format(f.fecha_emision,'%Y-%m-%d') as emision,f.no_factura,c.nombre as cliente,f.concepto,a.nombre as area,f.monto,f.iva,f.total,ep.nombre as estatus,f.fecha_pago from facturacion f join clientes c on f.id_cliente=c.id join areas a on f.id_area=a.id join estatus_pago ep on f.estatus_pago=ep.id where f.id='$id_factura' order by f.no_factura";
@@ -234,7 +242,7 @@
 			$sumtotal=money_format("$%n",$sumtotal);
 			$total1=money_format("$%n",$total1);
 			//$sumpagados=money_format("$%n",$sumpagos);
-			
+			echo $TablaComplemento;		
 	?>		
 	<tr><td colspan="5"></td><td><? echo $saldoant;?></td><td><?echo$sumsub;?></td><td><?echo$sumiva;?></td><td><?echo$sumtotal;?></td><td><?echo$total1;?></td><td></td><td></td></tr>
 	</tbody>		

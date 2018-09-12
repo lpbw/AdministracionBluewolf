@@ -32,7 +32,7 @@
 				$queryactualizar="update facturacion set estatus_pago='$e',fecha_pago='$f' where id='$idfac'";
 				$resactualizar = mysql_query($queryactualizar) or die("La actualizacion en doc:facturas_cobrar:linea:39 fallo: $queryactualizar" . mysql_error());
 				// Inserta un complemento de pago 
-				$InsertComplemento="INSERT INTO complemento(no_factura,no_complemento,monto)VALUES('$idfac','$NoComplemento',0)";
+				$InsertComplemento="INSERT INTO complemento(id_factura,no_complemento,monto)VALUES('$idfac','$NoComplemento',0)";
 				$resinsert = mysql_query($InsertComplemento) or die("query en doc:facturas_cobrar:linea:39 fallo: $InsertComplemento" . mysql_error());
 			}
 			$c++;
