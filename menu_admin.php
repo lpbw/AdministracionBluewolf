@@ -40,37 +40,10 @@
 	<body>
 
 		<div class="loader"></div>
-		
-
-		<ul id="slide-out" class="sidenav">
-			<li><img src="images/bw.png" class="centrar"></li>
-			<li><div class="divider"></div></li>
-			<li><a href="#!">Clientes</a></li>
-			<li><div class="divider"></div></li>
-			<li><a class="subheader">Subheader</a></li>
-			<li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
-  		</ul>
 
 		<!-- contenedor -->
-		<div>
-			<div class="row">
-				<div class="col s12 m12 l12 xl12">
-					<!-- boton nav bar -->
-					<a href="#" data-target="slide-out" class="sidenav-trigger">
-						<i class="material-icons medium indigo-text">
-							menu
-						</i>
-					</a>
-					<!-- fin boton nav bar -->
-				</div>
-			</div>
+		<div class="">
 			
-			<div class="row">
-				<div class="col s12 m12 l12 xl12">
-					
-				</div>
-			</div>
-
 		</div>
 		<!-- fin contenedor -->
 
