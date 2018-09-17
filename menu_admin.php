@@ -51,6 +51,12 @@ $tipo=$_SESSION['idA'];
 				
 						<?if($tipo==1){?>
 						<li><a href="anticipos.php" class="button special fit">Viáticos</a></li>
+						<!--
+						*CRUD proveedores
+						*fecha: 17/09/2018
+						-->
+						<li><a href="adm_proveedores.php" class="button special fit">Proveedores</a></li>
+
 						<?}?>
 					</ul>
 					<ul class="actions">
