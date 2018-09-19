@@ -1,13 +1,7 @@
 <?php
-
 include_once "../helpers/DatabaseConfig.php";
 include_once "../models/UserModel.php";
 
-/**
- *
- * @version 1.0
- * @author isaac.ojeda
- */
 class UsersService
 {
     private $conf;
@@ -20,16 +14,16 @@ class UsersService
     }
 
     /**
-     * Autentica un usuario y contraseña
+     * Autentica un usuario y contraseï¿½a
      * @param mixed $user
      * @param mixed $password
-     * @return UserModel Resultado de la autenticación
+     * @return UserModel Resultado de la autenticaciï¿½n
      */
-    public function authenticateUser()
+    public function authenticateUser($latitud,$longitud)
     {
-        //$hashedPassword = md5($password);
-        
-        $query = "SELECT id, nombre, email, password, tipo FROM usuarios";//WHERE email = '$user' and password = '$password'
+        $query = "UPDATE usuariospruebas SET latitud='$latitud',longitud='$longitud' WHERE id_usuario=1";
+        $result = $this->conf->execute_sql($query);
+        $query = "SELECT id_usuario,latitud,longitud FROM usuariospruebas WHERE id_usuario=2";//WHERE email = '$user' and password = '$password'
         $result = $this->conf->execute_sql($query);
         
 		//echo $result->num_rows;
@@ -39,12 +33,10 @@ class UsersService
          while($row = $result->fetch_assoc()){
 			//$row = $result->fetch_assoc();
             
-			$user[$count]->id = $row["id"];
-            $user[$count]->nombre = $row["nombre"];
-            $user[$count]->email = $row["email"];
-			$user[$count]->password = $row["password"];
-            $user[$count]->tipo = $row["tipo"];
-       	//echo $count;
+			$user[$count]->id_usuario = $row["id_usuario"];
+            $user[$count]->latitud = $row["latitud"];
+            $user[$count]->longitud = $row["longitud"];
+			
 		$count++;
 	    }
 

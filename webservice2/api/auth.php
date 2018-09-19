@@ -4,24 +4,12 @@
 
     header('Content-type: application/json');
 
-
-    /*if(!isset($_POST["user"]) || !isset($_POST["pass"])){
-        
-        $response = new ApiResponse(false, 400, "Missing params user or pass");
-
-        echo json_encode($response);
-
-        exit();
-    }
-
-    $user = $_POST["user"];
-    $password = $_POST["pass"];*/
-
     $service = new UsersService();
-    
-    $result = $service->authenticateUser();
+    $latitud = $_GET['lat'];
+    $longitud = $_GET['lon'];
+    $result = $service->authenticateUser($latitud,$longitud);
 
-    if($result->id == -1){
+    if($result->id_usuario == -1){
         $response = new ApiResponse(false);
         echo json_encode($response);        
     }else{

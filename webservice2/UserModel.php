@@ -1,23 +1,12 @@
 <?php
-
-/**
- * UserModel short summary.
- *
- * UserModel description.
- *
- * @version 1.0
- * @author isaac.ojeda
- */
-class UserModel
+class UsuarioModel
 {
-    public $id[];
-    public $nombre[];
-    public $email[];
-    public $password[];
-    public $tipo[];
+    public $id_usuario[];
+    public $latitud[];
+    public $longitud[];
 
     function __construct(){
-        $this->id = -1;
+        $this->id_usuario = -1;
     }
 }
 
