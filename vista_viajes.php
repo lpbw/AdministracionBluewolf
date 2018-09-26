@@ -743,7 +743,7 @@ while ($resul=mysql_fetch_assoc($res)){$c++; ?><tr><td><? echo $resul['nombre']?
 			var idproyectos=[];
 			for(x=9;x<=maxid;x++)
 			{
-				if(document.getElementById('check'+x).checked)
+				if($("check"+x).checked)
 				{
 					//alert('seleccionado: '+x);
 					flag=1;
