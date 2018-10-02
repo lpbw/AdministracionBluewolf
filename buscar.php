@@ -39,7 +39,7 @@ switch($valor)
 			if($id_proyecto==0){//sin proyecto
 
 				// llenar los registros de complementos de pago
-				$QueryComplemento="SELECT com.id_complemento,fac.fecha_emision AS emision,com.no_complemento,c.nombre AS cliente,com.concepto,com.monto,fac.estatus_pago AS estatus,fac.fecha_pago AS pago FROM complemento com JOIN facturacion fac ON com.id_factura=fac.id JOIN clientes c ON fac.id_cliente=c.id WHERE fac.id=$id_factura";
+				$QueryComplemento="SELECT com.id_complemento,com.fecha AS emision,com.no_complemento,c.nombre AS cliente,com.concepto,com.monto,fac.estatus_pago AS estatus,fac.fecha_pago AS pago FROM complemento com JOIN facturacion fac ON com.id_factura=fac.id JOIN clientes c ON fac.id_cliente=c.id WHERE fac.id=$id_factura";
 				$ResultadoComplemento = mysql_query($QueryComplemento) or die("Error en consulta complemento: $QueryComplemento " . mysql_error());
 				while($ResCom = mysql_fetch_assoc($ResultadoComplemento))
 				{
