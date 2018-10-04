@@ -29,7 +29,7 @@ $hoy=date("d-m-Y");
     var hasta=document.getElementById('hasta').value;
     var val=1;
     var a = document.getElementById('link');
-    a.setAttribute("href", "exportar_reportes.php?f1="+desde+"&f2="+hasta+"&val="+val);
+    a.setAttribute("href", "exportar_facturas.php?f1="+desde+"&f2="+hasta);
     buscar();
   }
 
