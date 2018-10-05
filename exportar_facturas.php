@@ -279,11 +279,13 @@
     /**------------------Query para encontrar Proyectos de las facturas ppagadas -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
         $QueryProyectoPagadas="SELECT id,id_proyecto,no_factura,estatus_pago FROM facturacion WHERE fecha_emision>='$desde 00:00:00' AND fecha_emision<='$hasta 00:00:00' AND estatus_pago=2 ORDER BY no_factura";
         $ResultadoProyectoPagadas = mysql_query($QueryProyectoPagadas) or die("Error en consulta proyecto pagadas: $QueryProyectoPagadas " . mysql_error());
-        //$Columna=0;
+        $Count=0;
         //$Fila=3;
 		while($ResProyectoPagadas=mysql_fetch_assoc($ResultadoProyectoPagadas))
 		{
             $IdFacturaPagadas = $ResProyectoPagadas['id'];
+            $ArrayIdFacturasPagadas[$count] = $IdFacturaPagadas;
+            $count++;
             if ($ResProyectoPagadas['id_proyecto']==0)//factura no tiene proyecto
             {
                 $QueryFacturasPagadas = "SELECT ep.nombre AS estatus,date_format(f.fecha_emision,'%Y-%m-%d') as emision,f.no_factura,c.nombre as cliente,f.concepto,a.nombre as area,f.monto,f.iva,f.total,ep.nombre as estatus,date_format(f.fecha_pago,'%Y-%m-%d') AS pago from facturacion f join clientes c on f.id_cliente=c.id join areas a on f.id_area=a.id join estatus_pago ep on f.estatus_pago=ep.id where f.id='$IdFacturaPagadas' order by f.no_factura";
@@ -530,7 +532,92 @@
             $Fila++;
         }
     /**--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
-    
+        
+    /*------------------------------- Complementos ----------------------------------------------------------------------*/
+       
+        foreach ($ArrayIdFacturasPagadas as $Id) 
+        {   
+            $QueryProyectoComplemento="SELECT f.id_proyecto,f.no_factura,f.estatus_pago,c.id_complemento,c.no_complemento,c.concepto,c.monto FROM facturacion f JOIN complemento c ON f.id=c.id_factura WHERE id=$Id";
+            $ResultadoProyectoComplemento = mysql_query($QueryProyectoComplemento) or die("Error Query complemento $QueryProyectoComplemento".mysql_error());
+            $ResProyectoComplemento = mysql_fetch_assoc($ResultadoProyectoComplemento);
+            
+            if ($ResProyectoComplemento['id_proyecto']==0)//factura no tiene proyecto
+            {
+                $QueryProyectoCom = "SELECT ep.nombre AS estatus,date_format(f.fecha_emision,'%Y-%m-%d') as emision,f.no_factura,c.nombre as cliente,f.concepto,a.nombre as area,f.monto,f.iva,f.total,ep.nombre as estatus,date_format(f.fecha_pago,'%Y-%m-%d') AS pago from facturacion f join clientes c on f.id_cliente=c.id join areas a on f.id_area=a.id join estatus_pago ep on f.estatus_pago=ep.id where f.id='$Id' order by f.no_factura";
+            }
+            else//Factura con proyecto
+            {
+                $QueryProyectoCom = "SELECT ep.nombre AS estatus,date_format(f.fecha_emision,'%Y-%m-%d') as emision,f.no_factura,c.nombre as cliente,f.concepto,a.nombre as area,f.monto,f.iva,f.total,ep.nombre as estatus,date_format(f.fecha_pago,'%Y-%m-%d') AS pago from facturacion f join clientes c on f.id_cliente=c.id join proyectos p on f.id_proyecto=p.id join areas a on p.id_area=a.id join estatus_pago ep on f.estatus_pago=ep.id where f.id='$Id' order by f.no_factura";
+            }
+
+            
+            $ResultadoComplemento = mysql_query($QueryProyectoCom) or die("Error Query complemento $QueryProyectoCom".mysql_error());
+            $ResComplemento = mysql_fetch_assoc($ResultadoComplemento);
+            
+            //fecha
+            $Columna=0; //A
+            $Excel->getActiveSheet()->setCellValueByColumnAndRow($Columna, $Fila, $ResComplemento['pago']);
+            $Excel->getActiveSheet()->getStyleByColumnAndRow($Columna,$Fila)->applyFromArray($body);
+
+            //no factura
+            $Columna++; //B
+            $Excel->getActiveSheet()->setCellValueByColumnAndRow($Columna, $Fila, $ResComplemento['no_factura']);
+            $Excel->getActiveSheet()->getStyleByColumnAndRow($Columna,$Fila)->applyFromArray($body);
+
+            //cliente
+            $Columna++; //C
+            $Excel->getActiveSheet()->setCellValueByColumnAndRow($Columna, $Fila, $ResComplemento['cliente']);
+            $Excel->getActiveSheet()->getStyleByColumnAndRow($Columna,$Fila)->applyFromArray($body);
+            
+            //concepto
+            $Columna++; //D
+            $Excel->getActiveSheet()->setCellValueByColumnAndRow($Columna, $Fila, $ResProyectoComplemento['concepto']);
+            $Excel->getActiveSheet()->getStyleByColumnAndRow($Columna,$Fila)->applyFromArray($body);
+
+            //area
+            $Columna++; //E
+            $Excel->getActiveSheet()->setCellValueByColumnAndRow($Columna, $Fila, $ResComplemento['area']);
+            $Excel->getActiveSheet()->getStyleByColumnAndRow($Columna,$Fila)->applyFromArray($body);
+
+            //saldo anterior
+            $Columna++; //F
+            $Excel->getActiveSheet()->setCellValueByColumnAndRow($Columna, $Fila, 0);
+            $Excel->getActiveSheet()->getStyleByColumnAndRow($Columna,$Fila)->applyFromArray($body)->getNumberFormat()->setFormatCode("$#.##0,00");
+
+            //subtotal
+            $Columna++; //G
+            $Excel->getActiveSheet()->setCellValueByColumnAndRow($Columna, $Fila, 0);
+            $Excel->getActiveSheet()->getStyleByColumnAndRow($Columna,$Fila)->applyFromArray($body)->getNumberFormat()->setFormatCode("$#.##0,00");
+
+            //iva
+            $Columna++; //H
+            $Excel->getActiveSheet()->setCellValueByColumnAndRow($Columna, $Fila, 0);
+            $Excel->getActiveSheet()->getStyleByColumnAndRow($Columna,$Fila)->applyFromArray($body)->getNumberFormat()->setFormatCode("$#.##0,00");
+
+            //total
+            $Columna++; //I
+            $Excel->getActiveSheet()->setCellValueByColumnAndRow($Columna, $Fila, 0);
+            $Excel->getActiveSheet()->getStyleByColumnAndRow($Columna,$Fila)->applyFromArray($body)->getNumberFormat()->setFormatCode("$#.##0,00");
+
+            //saldo
+            $Columna++; //J
+            $Excel->getActiveSheet()->setCellValueByColumnAndRow($Columna, $Fila, 0);
+            $Excel->getActiveSheet()->getStyleByColumnAndRow($Columna,$Fila)->applyFromArray($body)->getNumberFormat()->setFormatCode("$#.##0,00");
+
+            //estatus
+            $Columna++; //K
+            $Excel->getActiveSheet()->setCellValueByColumnAndRow($Columna, $Fila, $ResComplemento['estatus']);
+            $Excel->getActiveSheet()->getStyleByColumnAndRow($Columna,$Fila)->applyFromArray($body);
+
+            //fecha pago
+            $Columna++; //L
+            $Excel->getActiveSheet()->setCellValueByColumnAndRow($Columna, $Fila, $ResComplemento['pago']);
+            $Excel->getActiveSheet()->getStyleByColumnAndRow($Columna,$Fila)->applyFromArray($body);
+
+            $Fila++;
+        }
+    /**----------------------------------------------------------------------------------------------------------------- */
+
     /**-------------------------------------totales ---------------------------------------- */
         $Excel->getActiveSheet()->setCellValueByColumnAndRow(5, $Fila, $SaldoAnteriorGeneral);
         $Excel->getActiveSheet()->getStyleByColumnAndRow(5,$Fila)->applyFromArray($body)->getNumberFormat()->setFormatCode("$#.##0,00");
