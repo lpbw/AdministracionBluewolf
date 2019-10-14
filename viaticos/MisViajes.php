@@ -20,30 +20,10 @@
       	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
       	<!--Import materialize.css-->
       	<link type="text/css" rel="stylesheet" href="assets/css/materialize.min.css"  media="screen,projection"/>
-		  
+		<link type="text/css" rel="stylesheet" href="assets/css/MisViajes.css" />
 			<script src="assets/js/viaticos.js"></script>
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Viaticos</title>
-		<style>
-		.Mymodal{
-			display:none;
-			position:fixed;
-			z-index:1;
-			top:0;
-			left:0;
-			width:100%;
-			height:100%;
-			background-color:rgba(0,0,0,0.4);
-		}
-
-		.Mycontainer{
-			background-color: #fefefe;
-			margin: auto;
-			padding: 20px;
-			border: 1px solid #888;
-			height:90%;
-		}
-		</style>
     </head>
     <body class="is-loading">
 		<!-- Wrapper -->
